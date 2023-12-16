@@ -33,7 +33,7 @@ The data used in this analysis are too large to include in the repository and in
 
 #### *Night lights*
 
-We utilized remotely-sensed nighttime radiance data sourced from the [Visible Infrared Imaging Radiometer Suite (VIIRS)](https://en.wikipedia.org/wiki/Visible_Infrared_Imaging_Radiometer_Suite) onboard the Suomi satellite. We utilize the VNP46A1 product in particular, which includes daily, top-of-atmosphere, at-sensor nighttime radiance. The VNP46A1 data were downloaded from NASA's [Level-1 and Atmospheric Archive & Distribution System Distributed Active Archive Center (LAADS DAAC)](https://ladsweb.modaps.eosdis.nasa.gov/) and prepared before this analysis. The VIIRS data are distributed in 10x10 degree tiles in sinusoidal equal-area projection. Each tile can be identified by its horizontal and vertical position in the grid. Since Houston is located on the border of tiles h08v05 and h08v06, we use two tiles for each date included in the analysis. After exploring the data around the 2021 winter storms through NASA's Worldview, we decided to use VIIRS data from 2021-02-07 and 2021-02-16 because they provide clear images comapared to other dates with too much cloud cover. The data are stored in the `VNP46A1` sub-folder and are as follows:
+We utilized remotely-sensed nighttime radiance data sourced from the [Visible Infrared Imaging Radiometer Suite (VIIRS)](https://en.wikipedia.org/wiki/Visible_Infrared_Imaging_Radiometer_Suite) onboard the Suomi satellite. We utilize the VNP46A1 product in particular, which includes daily, top-of-atmosphere, at-sensor nighttime radiance. The VNP46A1 data were downloaded from NASA's [Level-1 and Atmospheric Archive & Distribution System Distributed Active Archive Center (LAADS DAAC)](https://ladsweb.modaps.eosdis.nasa.gov/) and prepared before this analysis. The VIIRS data are distributed in 10x10 degree tiles in sinusoidal equal-area projection. Each tile can be identified by its horizontal and vertical position in the grid. Since Houston is located on the border of tiles h08v05 and h08v06, we use two tiles for each date included in the analysis. After exploring the data around the 2021 winter storms through NASA's Worldview, we decided to use VIIRS data from 2021-02-07 and 2021-02-16 because they provide clear images compared to other dates with too much cloud cover. The data are stored in the `VNP46A1` sub-folder and are as follows:
 
 -   `VNP46A1.A2021038.h08v05.001.2021039064328.h5.tif`: tile h08v05, collected on 2021-02-07
 
@@ -51,7 +51,7 @@ We utilized geospatial data of the roads that are located within the Houston met
 
 #### *Homes*
 
-We utilized geospatial data of the buildings that are located within the Houston metropolitan area. The source of these data was also [OpenStreetMap (OSM)](https://planet.openstreetmap.org/). We downloaded the data for Texas and perpared a GeoPackage with homes in the Houston metropolitan area before this analysis. These data are stored in the following file:
+We utilized geospatial data of the buildings that are located within the Houston metropolitan area. The source of these data was also [OpenStreetMap (OSM)](https://planet.openstreetmap.org/). We downloaded the data for Texas and prepared a GeoPackage with homes in the Houston metropolitan area before this analysis. These data are stored in the following file:
 
 -   `gis_osm_buildings_a_free_1.gpkg`
 
@@ -59,7 +59,7 @@ We utilized geospatial data of the buildings that are located within the Houston
 
 We utilized socioeconomic data at the census tracts level from the 2019 [U.S. Census Bureau's American Community Survey](https://www.census.gov/programs-surveys/acs). The data are formatted in an ArcGIS ["file geodatabase"](https://desktop.arcgis.com/en/arcmap/latest/manage-data/administer-file-gdbs/file-geodatabases.htm), which is a multi-file proprietary format that's similar to a GeoPackage file. Each layer in the ArcGIS file geodatabase contains a subset of the fields document in the [ACS metadata](https://www2.census.gov/geo/docs/maps-data/data/tiger/prejoined/ACSMetadata2011.txt). The geometry information is separate from the ACS layers and is combined in our analysis. These data are stored in the following folder:
 
-\-`ACS_2019_5YR_TRACT_48.gdb`
+-   `ACS_2019_5YR_TRACT_48.gdb`
 
 ### Results
 

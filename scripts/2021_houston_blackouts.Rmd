@@ -309,9 +309,8 @@ plot_3 <- plot_1 + inset_element(plot_2, 0.78, 0.002, 0.99, 0.2)
 
 plot_3
 
-#save figure
+# save figure
 ggsave("figures/census_tract_blackouts.png", plot_3, width = 8, height = 6, units = "in")
-
 ```
 
 Lastly, we compared the incomes of census tracts that were and were not impacted by the blackouts. Results indicate that the blackouts from the 2021 winter storms impacted more homes in census tracts with higher median incomes than those with lower median incomes (Figure 2, Figure 3). However, this analysis was limited to one socioeconomic variable, income. If we include other variables like population density, ethnicity, age, etc., we may have found different results. Most of the census tracts that experienced blackouts are concentrated in the center of the Houston area, which could reflect relationships between income, population density, and general electricity usage. Furthermore, we defined areas that experienced blackouts as those that experienced a $200 nW cm^{-2} sr{-1}$ decrease in light intensity between February 7th and February 16th for this study. This definition does not take into account length of blackouts, use of back-up generators, or how quickly power was restored to a census tract. We were limited to using satellite imagery from these two dates as a proxy because of cloudy atmospheric conditions during the other days, so it is difficult to characterize the temporal nature of the blackouts. 
@@ -324,7 +323,7 @@ tracts_blackouts_centroids <- sf::st_centroid(tracts_blackouts)
 # plot median income by census tracts
 plot_4 <- ggplot() +
   geom_sf(data = tracts_houston, aes(fill = income)) +
-  scale_fill_viridis_c(breaks = c(50000,100000,150000,200000,250000), labels = c("50K", "100K", "150K", "200K", "250K")) +
+  scale_fill_viridis_c(breaks = c(50000, 100000, 150000, 200000, 250000), labels = c("50K", "100K", "150K", "200K", "250K")) +
   labs(fill = "Median Income ($)") +
   geom_sf(data = tracts_blackouts_centroids, size = 0.5, aes(color = "")) +
   scale_colour_manual(name = "Experienced \nblackout", values = "black") +
@@ -342,9 +341,8 @@ plot_5 <- plot_4 + inset_element(plot_2, 0.78, 0.002, 0.99, 0.2)
 
 plot_5
 
-#save figure
+# save figure
 ggsave("figures/median_income_blackouts.png", plot_5, width = 8, height = 6, units = "in")
-
 ```
 
 
@@ -382,7 +380,6 @@ plot_8 <- (plot_6 + plot_layout(guides = "collect") & theme(legend.position = "b
 
 plot_8
 
-#save figure
+# save figure
 ggsave("figures/income_distributions.png", plot_8, width = 8, height = 6, units = "in")
-
 ```
