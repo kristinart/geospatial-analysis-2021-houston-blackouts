@@ -301,7 +301,9 @@ plot_2 <- ggplot() +
     axis.text = element_blank(),
     axis.ticks = element_blank(),
     panel.grid.major = element_blank(),
-    panel.grid.minor = element_blank()
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "transparent", color = NA),
+    panel.background = element_rect(fill = "transparent", color = NA)
   )
 
 # combine plot and texas inset
@@ -320,29 +322,38 @@ Lastly, we compared the incomes of census tracts that were and were not impacted
 # create centroids for tracts with blackouts
 tracts_blackouts_centroids <- sf::st_centroid(tracts_blackouts)
 
+#palette from colorbrewer2.org - colorblind safe
+color_pal <- c('#ffffcc','#a1dab4','#41b6c4','#2c7fb8','#253494')
+
 # plot median income by census tracts
 plot_4 <- ggplot() +
   geom_sf(data = tracts_houston, aes(fill = income)) +
-  scale_fill_viridis_c(breaks = c(50000, 100000, 150000, 200000, 250000), labels = c("50K", "100K", "150K", "200K", "250K")) +
+  scale_fill_gradientn(colors = color_pal, values = scales::rescale(c(-Inf, 50000, 100000, 150000, 200000, 250000, Inf)), breaks = c(50000, 100000, 150000, 200000, 250000), labels = c("$50K", "$100K", "$150K", "$200K", "$250K")) +
   labs(fill = "Median Income ($)") +
   geom_sf(data = tracts_blackouts_centroids, size = 0.5, aes(color = "")) +
   scale_colour_manual(name = "Experienced \nblackout", values = "black") +
-  annotation_scale(plot_unit = "km", location = "bl", pad_x = unit(2.1, "in"), pad_y = unit(0.008, "in"), style = "ticks") +
+  annotation_scale(location = "bl", pad_x = unit(4.38, "in"), pad_y = unit(0.23, "in"), style = "ticks") +
   annotation_north_arrow(
     location = "bl",
-    pad_x = unit(4.1, "in"),
-    pad_y = unit(0.8, "in"),
+    pad_x = unit(4.9, "in"),
+    pad_y = unit(0.4, "in"),
     style = ggspatial::north_arrow_nautical()
   ) +
-  theme_bw()
+  theme_bw() + 
+  theme(panel.grid = element_line(color = "grey95"),
+        legend.position= c(1.18, .6))+
+  guides(color = guide_legend(order = 2), fill= guide_legend(order = 1))
+#guides(color = guide_colorbar(order = 2), fill = guide_legend(order = 1))
+
+plot_4
 
 # combine plot and texas inset
-plot_5 <- plot_4 + inset_element(plot_2, 0.78, 0.002, 0.99, 0.2)
+plot_5 <- plot_4 + inset_element(plot_2, left =  1.02, bottom = 0.005, right = 1.28, top = 0.4, align_to = "plot") 
 
 plot_5
 
 # save figure
-ggsave("figures/median_income_blackouts.png", plot_5, width = 8, height = 6, units = "in")
+ggsave("figures/median_income_blackouts.png", plot_5, device = "png", height = 6, width = 12, units = "in", bg = "white")
 ```
 
 
@@ -361,22 +372,40 @@ income_no_blackouts <- tracts_buildings %>%
 # combine income data
 income_distr <- rbind(cbind(income_blackouts, group = "Blackouts"), cbind(income_no_blackouts, group = "No blackouts"))
 
+# remove rows with non-finite values
+income_distr <- income_distr[is.finite(income_distr$income), ]
+
 # plot income distribution
 plot_6 <- ggplot(income_distr) +
   geom_boxplot(aes(x = group, y = income, fill = group), notch = TRUE) +
-  scale_fill_manual(values = c("#3B9AB2", "#EBCC2A")) +
+  scale_y_continuous(labels = scales::label_currency(), expand = c(0, 0)) +
+  #scale_fill_manual(values = c("#3B9AB2", "#EBCC2A")) +
+  scale_fill_manual(values = c("#4F9BB2", "#FC8848")) +
   labs(x = "Tract type", y = "Income ($)", fill = "Tract type") +
   theme_bw() +
-  theme(legend.position = "none")
+  theme(legend.position = "none",
+        panel.grid = element_line(color = "grey95"))
+
+plot_6 
 
 plot_7 <- ggplot(income_distr) +
-  geom_density(aes(x = income, col = group), size = 1.5) +
+  geom_density(aes(x = income,  ..scaled.., col = group, fill = group), size = 1.5, alpha = 0.5) +
+  scale_x_continuous(labels = scales::label_currency(),expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0), limits = c(0, 1.02)) +
   labs(col = "Tract type", x = "Income ($)", y = "Density") +
-  scale_color_manual(values = c("#3B9AB2", "#EBCC2A")) +
+  scale_color_manual(values = c("#4F9BB2", "#FC8848")) +
+  scale_fill_manual(values = c("#4F9BB2", "#FC8848")) +
+    #scale_color_manual(values = c("#3B9AB2", "#EBCC2A")) +
+  #scale_fill_manual(values = c("#3B9AB2", "#EBCC2A")) +
+  geom_vline(xintercept = 60414, linetype = "dashed", color = "#466886")+
+  geom_vline(xintercept = 55128, linetype = "dashed", color = "coral4")+
   theme_bw() +
-  theme(legend.position = "bottom")
+  theme(legend.position = "bottom",
+        panel.grid = element_line(color = "grey95"))
 
-plot_8 <- (plot_6 + plot_layout(guides = "collect") & theme(legend.position = "bottom")) + (plot_7 + theme(legend.position = "none")) + plot_annotation(tag_levels = "A")
+plot_7
+
+plot_8 <- (plot_6 + plot_layout(guides = "collect") & theme(legend.position = "bottom")) + (plot_7 + theme(legend.position = "none")) + plot_annotation(tag_levels = "A") 
 
 plot_8
 
