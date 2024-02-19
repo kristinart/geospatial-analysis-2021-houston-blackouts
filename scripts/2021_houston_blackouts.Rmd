@@ -380,7 +380,7 @@ plot_6 <- ggplot(income_distr) +
   geom_boxplot(aes(x = group, y = income, fill = group), notch = TRUE) +
   scale_y_continuous(labels = scales::label_currency(), expand = c(0, 0)) +
   #scale_fill_manual(values = c("#3B9AB2", "#EBCC2A")) +
-  scale_fill_manual(values = c("#4F9BB2", "#FC8848")) +
+  scale_fill_manual(values = c("#6BB9C7", "#EDB458")) +
   labs(x = "Tract type", y = "Income ($)", fill = "Tract type") +
   theme_bw() +
   theme(legend.position = "none",
@@ -393,12 +393,12 @@ plot_7 <- ggplot(income_distr) +
   scale_x_continuous(labels = scales::label_currency(),expand = c(0, 0)) +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 1.02)) +
   labs(col = "Tract type", x = "Income ($)", y = "Density") +
-  scale_color_manual(values = c("#4F9BB2", "#FC8848")) +
-  scale_fill_manual(values = c("#4F9BB2", "#FC8848")) +
+  scale_color_manual(values = c("#6BB9C7", "#EDB458")) +
+  scale_fill_manual(values = c("#6BB9C7", "#EDB458")) +
     #scale_color_manual(values = c("#3B9AB2", "#EBCC2A")) +
   #scale_fill_manual(values = c("#3B9AB2", "#EBCC2A")) +
-  geom_vline(xintercept = 60414, linetype = "dashed", color = "#466886")+
-  geom_vline(xintercept = 55128, linetype = "dashed", color = "coral4")+
+  geom_vline(xintercept = 60414, linetype = "dashed", color = "#4F9BB2")+
+  geom_vline(xintercept = 55128, linetype = "dashed", color = "#EC8848")+
   theme_bw() +
   theme(legend.position = "bottom",
         panel.grid = element_line(color = "grey95"))
