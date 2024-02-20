@@ -322,8 +322,8 @@ Lastly, we compared the incomes of census tracts that were and were not impacted
 # create centroids for tracts with blackouts
 tracts_blackouts_centroids <- sf::st_centroid(tracts_blackouts)
 
-#palette from colorbrewer2.org - colorblind safe
-color_pal <- c('#ffffcc','#a1dab4','#41b6c4','#2c7fb8','#253494')
+# palette from colorbrewer2.org - colorblind safe
+color_pal <- c("#ffffcc", "#a1dab4", "#41b6c4", "#2c7fb8", "#253494")
 
 # plot median income by census tracts
 plot_4 <- ggplot() +
@@ -335,20 +335,28 @@ plot_4 <- ggplot() +
   annotation_scale(location = "bl", pad_x = unit(4.38, "in"), pad_y = unit(0.23, "in"), style = "ticks") +
   annotation_north_arrow(
     location = "bl",
-    pad_x = unit(4.9, "in"),
+    pad_x = unit(4.8, "in"),
     pad_y = unit(0.4, "in"),
     style = ggspatial::north_arrow_nautical()
   ) +
-  theme_bw() + 
-  theme(panel.grid = element_line(color = "grey95"),
-        legend.position= c(1.18, .6))+
-  guides(color = guide_legend(order = 2), fill= guide_legend(order = 1))
-#guides(color = guide_colorbar(order = 2), fill = guide_legend(order = 1))
+  theme_bw() +
+  theme(
+    panel.grid = element_line(color = "grey97"),
+    legend.position = c(1.18, .6),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    axis.title.x = element_text(size = 14),
+    axis.title.y = element_text(size = 14),
+    legend.text = element_text(size = 14, hjust = 0.5),
+    legend.title = element_text(size = 14, hjust = 0.5)
+  ) +
+  guides(color = guide_legend(order = 2), fill = guide_legend(order = 1))
+# guides(color = guide_colorbar(order = 2), fill = guide_legend(order = 1))
 
 plot_4
 
 # combine plot and texas inset
-plot_5 <- plot_4 + inset_element(plot_2, left =  1.02, bottom = 0.005, right = 1.28, top = 0.4, align_to = "plot") 
+plot_5 <- plot_4 + inset_element(plot_2, left = 1.02, bottom = 0.005, right = 1.28, top = 0.4, align_to = "plot")
 
 plot_5
 
@@ -379,33 +387,49 @@ income_distr <- income_distr[is.finite(income_distr$income), ]
 plot_6 <- ggplot(income_distr) +
   geom_boxplot(aes(x = group, y = income, fill = group), notch = TRUE) +
   scale_y_continuous(labels = scales::label_currency(), expand = c(0, 0)) +
-  #scale_fill_manual(values = c("#3B9AB2", "#EBCC2A")) +
+  # scale_fill_manual(values = c("#3B9AB2", "#EBCC2A")) +
   scale_fill_manual(values = c("#6BB9C7", "#EDB458")) +
   labs(x = "Tract type", y = "Income ($)", fill = "Tract type") +
   theme_bw() +
-  theme(legend.position = "none",
-        panel.grid = element_line(color = "grey95"))
+  theme(
+    legend.position = "none",
+    panel.grid = element_line(color = "grey97"),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    axis.title.x = element_text(size = 14, margin = margin(t = 10)),
+    axis.title.y = element_text(size = 14,margin = margin(r = 10)),
+    legend.text = element_text(size = 14, hjust = 0.5),
+    legend.title = element_text(size = 14, hjust = 0.5, margin = margin(b = 8))
+  )
 
-plot_6 
+plot_6
 
 plot_7 <- ggplot(income_distr) +
-  geom_density(aes(x = income,  ..scaled.., col = group, fill = group), size = 1.5, alpha = 0.5) +
-  scale_x_continuous(labels = scales::label_currency(),expand = c(0, 0), limits = c(0,260000)) +
+  geom_density(aes(x = income, ..scaled.., col = group, fill = group), size = 1.5, alpha = 0.5) +
+  scale_x_continuous(labels = scales::label_currency(), expand = c(0, 0), limits = c(0, 265000)) +
   scale_y_continuous(expand = c(0, 0), limits = c(0, 1.02)) +
   labs(col = "Tract type", x = "Income ($)", y = "Density") +
   scale_color_manual(values = c("#6BB9C7", "#EDB458")) +
   scale_fill_manual(values = c("#6BB9C7", "#EDB458")) +
-    #scale_color_manual(values = c("#3B9AB2", "#EBCC2A")) +
-  #scale_fill_manual(values = c("#3B9AB2", "#EBCC2A")) +
-  geom_vline(xintercept = 60414, linetype = "dashed", color = "#4F9BB2")+
-  geom_vline(xintercept = 55128, linetype = "dashed", color = "#EC8848")+
+  # scale_color_manual(values = c("#3B9AB2", "#EBCC2A")) +
+  # scale_fill_manual(values = c("#3B9AB2", "#EBCC2A")) +
+  geom_vline(xintercept = 60414, linetype = "dashed", color = "#4F9BB2") +
+  geom_vline(xintercept = 55128, linetype = "dashed", color = "#EC8848") +
   theme_bw() +
-  theme(legend.position = "bottom",
-        panel.grid = element_line(color = "grey95"))
+  theme(
+    legend.position = "bottom",
+    panel.grid = element_line(color = "grey97"),
+    axis.text.x = element_text(size = 10),
+    axis.text.y = element_text(size = 12),
+    axis.title.x = element_text(size = 14, margin = margin(t = 10)),
+    axis.title.y = element_text(size = 14,margin = margin(r = 10)),
+    legend.text = element_text(size = 14, hjust = 0.5),
+    legend.title = element_text(size = 14, hjust = 0.5, margin = margin(b = 8))
+  )
 
 plot_7
 
-plot_8 <- (plot_6 + plot_layout(guides = "collect") & theme(legend.position = "bottom")) + (plot_7 + theme(legend.position = "none")) + plot_annotation(tag_levels = "A") 
+plot_8 <- (plot_6 + plot_layout(guides = "collect") & theme(legend.position = "bottom")) + (plot_7 + theme(legend.position = "none")) + plot_annotation(tag_levels = "A")
 
 plot_8
 
